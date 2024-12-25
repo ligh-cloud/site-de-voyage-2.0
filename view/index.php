@@ -30,7 +30,7 @@
         <div class="relative z-10 flex flex-col items-center justify-center text-center text-white h-full">
             <h1 class="text-5xl font-bold mb-6">Bienvenue sur TravelRes</h1>
             <p class="text-2xl mb-8">Découvrez les meilleures destinations pour vos prochaines vacances</p>
-            <a href="catalog.php" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            <a href="login.php" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                 Explorer les voyages
             </a>
         </div>
@@ -43,7 +43,7 @@
                 <div class="p-6">
                     <h2 class="text-lg font-bold mb-2">Plage de rêve</h2>
                     <p class="text-gray-600 mb-4">Détendez-vous sur des plages de sable fin et découvrez un cadre paradisiaque.</p>
-                    <a href="catalog.php" class="text-blue-600 hover:underline">En savoir plus</a>
+                    <a href="login.php" class="text-blue-600 hover:underline">En savoir plus</a>
                 </div>
             </div>
             <div class="bg-white shadow-lg rounded-lg">
@@ -51,7 +51,7 @@
                 <div class="p-6">
                     <h2 class="text-lg font-bold mb-2">Montagnes majestueuses</h2>
                     <p class="text-gray-600 mb-4">Explorez des paysages à couper le souffle avec des randonnées inoubliables.</p>
-                    <a href="catalog.php" class="text-blue-600 hover:underline">En savoir plus</a>
+                    <a href="login.php" class="text-blue-600 hover:underline">En savoir plus</a>
                 </div>
             </div>
             <div class="bg-white shadow-lg rounded-lg">
@@ -59,7 +59,7 @@
                 <div class="p-6">
                     <h2 class="text-lg font-bold mb-2">Villes animées</h2>
                     <p class="text-gray-600 mb-4">Découvrez la vie urbaine et explorez les sites culturels fascinants.</p>
-                    <a href="catalog.php" class="text-blue-600 hover:underline">En savoir plus</a>
+                    <a href="login.php" class="text-blue-600 hover:underline">En savoir plus</a>
                 </div>
             </div>
             <div class="bg-white shadow-lg rounded-lg">
@@ -67,7 +67,7 @@
                 <div class="p-6">
                     <h2 class="text-lg font-bold mb-2">Désert mystique</h2>
                     <p class="text-gray-600 mb-4">Vivez une aventure unique au cœur des dunes dorées et des oasis secrètes.</p>
-                    <a href="catalog.php" class="text-blue-600 hover:underline">En savoir plus</a>
+                    <a href="login.php" class="text-blue-600 hover:underline">En savoir plus</a>
                 </div>
             </div>
             <div class="bg-white shadow-lg rounded-lg">
@@ -75,7 +75,7 @@
                 <div class="p-6">
                     <h2 class="text-lg font-bold mb-2">Forêt enchantée</h2>
                     <p class="text-gray-600 mb-4">Plongez dans la nature sauvage et explorez des forêts verdoyantes.</p>
-                    <a href="catalog.php" class="text-blue-600 hover:underline">En savoir plus</a>
+                    <a href="login.php" class="text-blue-600 hover:underline">En savoir plus</a>
                 </div>
             </div>
             <div class="bg-white shadow-lg rounded-lg">
@@ -83,7 +83,7 @@
                 <div class="p-6">
                     <h2 class="text-lg font-bold mb-2">Lac tranquille</h2>
                     <p class="text-gray-600 mb-4">Profitez de la sérénité et des paysages époustouflants autour de l'eau.</p>
-                    <a href="catalog.php" class="text-blue-600 hover:underline">En savoir plus</a>
+                    <a href="login.php" class="text-blue-600 hover:underline">En savoir plus</a>
                 </div>
             </div>
         </div>
