@@ -30,6 +30,13 @@ CREATE TABLE reservation(
     FOREIGN KEY (id_client) REFERENCES utilisateurs(id),
     FOREIGN KEY (id_activite) REFERENCES activite(id_activite)
 );
+CREATE TABLE user_reservation(
+    id_reservation INT(11) AUTO_INCREMENT PRIMARY KEY,
+    id_client INT(11),
+    id_reservation INT(11),
+    FOREIGN KEY (id_client) REFERENCES utilisateurs(id),
+    FOREIGN KEY (id_reservation) REFERENCES reservation(id_reservation)
+);
 
 CREATE TABLE roles(
     id_role INT AUTO_INCREMENT PRIMARY KEY,
