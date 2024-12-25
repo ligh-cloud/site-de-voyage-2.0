@@ -48,42 +48,6 @@
         </div>
     </div>
 
-    <script>
-        // Check authentication
-        document.addEventListener('DOMContentLoaded', function() {
-            const user = JSON.parse(localStorage.getItem('user'));
-            if (!user) {
-                window.location.href = 'login.html';
-                return;
-            }
-
-            // Load user data
-            document.getElementById('userEmail').value = user.email;
-
-            // Load mock reservations
-            const mockReservations = [
-                { destination: 'Paris, France', date: '15-18 Mars 2024', status: 'Confirmé' },
-                { destination: 'Rome, Italie', date: '1-5 Avril 2024', status: 'En attente' }
-            ];
-
-            const reservationsList = document.getElementById('reservationsList');
-            mockReservations.forEach(reservation => {
-                const div = document.createElement('div');
-                div.className = 'border-b pb-4';
-                div.innerHTML = `
-                    <h3 class="font-medium">${reservation.destination}</h3>
-                    <p class="text-gray-600">${reservation.date}</p>
-                    <span class="text-green-600">${reservation.status}</span>
-                `;
-                reservationsList.appendChild(div);
-            });
-        });
-
-        function logout() {
-            localStorage.removeItem('user');
-            localStorage.removeItem('userType');
-            window.location.href = 'index.html';
-        }
-    </script>
+   
 </body>
 </html>

@@ -14,8 +14,9 @@
                     <a href="index.html" class="text-xl font-bold text-blue-600">TravelRes</a>
                 </div>
                 <div class="hidden md:flex items-center space-x-4">
+                    <!-- i should add a form her so i can deconnect -->
                     <span class="text-gray-700">Admin Panel</span>
-                    <button onclick="logout()" class="px-4 py-2 text-red-600 hover:text-red-700">Déconnexion</button>
+                    <button  class="px-4 py-2 text-red-600 hover:text-red-700">Déconnexion</button>
                 </div>
             </div>
         </div>
@@ -28,7 +29,7 @@
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <h2 class="text-xl font-semibold mb-4">Gestion des Utilisateurs</h2>
                 <div id="usersList" class="space-y-4">
-                    <!-- Users will be loaded here -->
+                    <!-- users will be loaded here -->
                 </div>
             </div>
 
@@ -56,21 +57,10 @@
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <h2 class="text-xl font-semibold mb-4">Réservations Récentes</h2>
                 <div id="reservationsList" class="space-y-4">
-                    <!-- Reservations will be loaded here -->
+                    
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // Check admin authentication
-        document.addEventListener('DOMContentLoaded', function() {
-            const user = JSON.parse(localStorage.getItem('user'));
-            if (!user || user.role !== 'admin') {
-                window.location.href = 'login.html';
-                return;
-            }
-
-            // Load mock users
-            const mockUsers = [
-                { email:
+           
