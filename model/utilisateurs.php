@@ -69,23 +69,45 @@ abstract class User {
 
     public function login() {
         $db = Database::getInstance()->getConnection();
-        $sql = "SELECT * FROM users WHERE email = ? LIMIT 1";
-
+        $sql = "SELECT u.*, r.role FROM users u 
+                LEFT JOIN roles r ON u.id = r.id_client 
+                WHERE u.email = ? LIMIT 1";
+        
         try {
             $stmt = $db->prepare($sql);
             $stmt->bindParam(1, $this->email, PDO::PARAM_STR);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-           
+            
             if ($result && password_verify($this->password, $result['password'])) {
-                return $result;  
+                if (session_status() === PHP_SESSION_NONE) {
+                    session_start();
+                }
+                
+                $this->id = $result['id'];
+                $this->nom = $result['nom'];
+                $this->prenom = $result['prenom'];
+                $this->role = $result['role'];
+                
+                $_SESSION['user'] = [
+                    'id' => $result['id'],
+                    'email' => $result['email'],
+                    'nom' => $result['nom'],
+                    'prenom' => $result['prenom'],
+                    'role' => $result['role']
+                ];
+                $_SESSION['is_logged_in'] = true;
+                
+                return $result;
             }
             return false;
+            
         } catch (PDOException $e) {
+            error_log("Login error: " . $e->getMessage());
             return false;
         }
     }
+    
 }
 class Admin extends User {
     public function getRole() {
@@ -98,8 +120,7 @@ class Admin extends User {
         try {
             switch ($action) {
                 case 'ban':
-                    // You might want to add a 'status' column to utilisateurs table
-                    // or handle banning differently
+                    
                     return false;
                     
                 case 'update':
@@ -124,7 +145,6 @@ class Admin extends User {
     public function manageActivities($action, $activityData = null, $activityId = null) {
         $db = Database::getInstance()->getConnection();
         
-<<<<<<< HEAD
         switch ($action) {
             case 'add':
                 $sql = "INSERT INTO activities (title, description, price, date_start, date_end) VALUES (?, ?, ?, ?, ?)";
@@ -137,7 +157,7 @@ class Admin extends User {
                     $activityData['date_fin']
                 );
                 return $stmt->execute();
-=======
+
         try {
             switch ($action) {
                 case 'add':
@@ -158,7 +178,7 @@ class Admin extends User {
                     $stmt = $db->prepare($sql);
                     $stmt->bindParam(1, $activityId, PDO::PARAM_INT);
                     return $stmt->execute();
->>>>>>> 728c79e06cd2a59988043cc40687c8fbef724e33
+
                 
                 default:
                     return false;
@@ -168,6 +188,7 @@ class Admin extends User {
             return false;
         }
     }
+}
 }
 
 class Client extends User {
@@ -203,13 +224,13 @@ class Client extends User {
             return false;
         }
     }
-<<<<<<< HEAD
+
 }
 
 
 
 
 ?>
-=======
-}
->>>>>>> 728c79e06cd2a59988043cc40687c8fbef724e33
+
+
+

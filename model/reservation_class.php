@@ -35,7 +35,7 @@ class Reservation {
         $sql = "DELETE FROM reservations WHERE id = ?";
         
         $stmt = $db->prepare($sql);
-        $stmt->bind_param("i", $this->id);
+        $stmt->bindParam("i", $this->id);
         return $stmt->execute();
     }
 }

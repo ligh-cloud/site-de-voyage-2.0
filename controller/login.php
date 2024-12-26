@@ -8,27 +8,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $errors = [];
 
+
     if (empty($email)) {
         $errors[] = "Email is required";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "Invalid email format";
     }
-
     if (empty($password)) {
         $errors[] = "Password is required";
     }
 
-    if (empty($email)) {
-        $errors[] = "Email is required";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "Invalid email format";
+    if (empty($errors)) {
+     
+        $user = new Client("", "", $email, $password);
+        
+      
+        if ($user->login()) {
+            echo "Login successful";
+        } else {
+            echo "Invalid email or password";
+            var_dump($user) ;
+        }
+    } else {
+      
+        foreach ($errors as $error) {
+            echo $error . "<br>";
+        }
     }
-    if(empty($errors)){
-        $hash_pass = password_hash($password ,PASSWORD_BCRYPT );
-    $user = new Client("" , "" , $email , $hash_pass);
-    if($user->login()){
-        echo "connexion good";
-    }
-}
 }
 ?>

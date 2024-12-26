@@ -30,7 +30,7 @@ public function update() {
     $sql = "UPDATE activities SET title = ?, description = ?, price = ?, start_date = ?, end_date = ? WHERE id = ?";
 
     $stmt = $db->prepare($sql);
-    $stmt->bind_param("ssdssi", $this->title, $this->description, $this->price, $this->startDate, $this->endDate, $this->id);
+    $stmt->bindParam("ssdssi", $this->title, $this->description, $this->price, $this->startDate, $this->endDate, $this->id);
     return $stmt->execute();
 }
 public function delete() {
@@ -38,7 +38,7 @@ public function delete() {
     $sql = "DELETE FROM activities WHERE id = ?";
     
     $stmt = $db->prepare($sql);
-    $stmt->bind_param("i", $this->id);
+    $stmt->bindParam("i", $this->id);
     return $stmt->execute();
 }
 }
