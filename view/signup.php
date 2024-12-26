@@ -25,7 +25,7 @@
             <div>
                 <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Créer un compte</h2>
             </div>
-            <form action="signup.php" method="POST" class="mt-8 space-y-6">
+            <form action="controller/signup.php" method="POST" class="mt-8 space-y-6">
                 <div class="rounded-md shadow-sm -space-y-px">
                     <div>
                         <input id="fullName" name="fullName" type="text" required 
