@@ -25,12 +25,17 @@
             <div>
                 <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Créer un compte</h2>
             </div>
-            <form action="controller/signup.php" method="POST" class="mt-8 space-y-6">
+            <form action="../controller/signup.php" method="POST" class="mt-8 space-y-6">
                 <div class="rounded-md shadow-sm -space-y-px">
                     <div>
-                        <input id="fullName" name="fullName" type="text" required 
+                        <input id="nom" name="nom" type="text" required 
                                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
-                               placeholder="Nom complet">
+                               placeholder="Nom">
+                    </div>
+                    <div>
+                        <input id="prenom" name="prenom" type="text" required 
+                               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
+                               placeholder="prenom">
                     </div>
                     <div>
                         <input id="email" name="email" type="email" required 
