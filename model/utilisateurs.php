@@ -69,31 +69,24 @@ abstract class User {
 
     public function login() {
         $db = Database::getInstance()->getConnection();
-        $sql = "SELECT u.*, r.role FROM utilisateurs u 
-                LEFT JOIN roles r ON u.id = r.id_client 
-                WHERE u.email = ? LIMIT 1";
-        
+        $sql = "SELECT * FROM users WHERE email = ? LIMIT 1";
+
         try {
             $stmt = $db->prepare($sql);
             $stmt->bindParam(1, $this->email, PDO::PARAM_STR);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            
+
+           
             if ($result && password_verify($this->password, $result['password'])) {
-                $this->id = $result['id'];
-                $this->nom = $result['nom'];
-                $this->prenom = $result['prenom'];
-                $this->role = $result['role'];
-                return $result;
+                return $result;  
             }
             return false;
         } catch (PDOException $e) {
-            error_log("Login error: " . $e->getMessage());
             return false;
         }
     }
 }
-
 class Admin extends User {
     public function getRole() {
         return 'admin';
