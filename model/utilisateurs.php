@@ -145,6 +145,19 @@ class Admin extends User {
     public function manageActivities($action, $activityData = null, $activityId = null) {
         $db = Database::getInstance()->getConnection();
         
+        switch ($action) {
+            case 'add':
+                $sql = "INSERT INTO activities (title, description, price, date_start, date_end) VALUES (?, ?, ?, ?, ?)";
+                $stmt = $db->prepare($sql);
+                $stmt->bindParam("ssdss", 
+                    $activityData['title'],
+                    $activityData['description'],
+                    $activityData['price'],
+                    $activityData['date_debut'],
+                    $activityData['date_fin']
+                );
+                return $stmt->execute();
+
         try {
             switch ($action) {
                 case 'add':
@@ -165,6 +178,7 @@ class Admin extends User {
                     $stmt = $db->prepare($sql);
                     $stmt->bindParam(1, $activityId, PDO::PARAM_INT);
                     return $stmt->execute();
+
                 
                 default:
                     return false;
@@ -174,6 +188,7 @@ class Admin extends User {
             return false;
         }
     }
+}
 }
 
 class Client extends User {
@@ -209,4 +224,13 @@ class Client extends User {
             return false;
         }
     }
+
 }
+
+
+
+
+?>
+
+
+

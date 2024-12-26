@@ -1,34 +1,48 @@
 <?php 
-class Reservation {
+class Activity {
     private $id;
-    private $userId;
-    private $activityId;
-    private $date;
-    private $status;
+    private $title;
+    private $description;
+    private $price;
+    private $endDate;
+    private $startDate;
     
-    public function __construct($userId, $activityId, $date) {
-        $this->userId = $userId;
-        $this->activityId = $activityId;
-        $this->date = $date;
-        $this->status = 'pending';
+    public function __construct($title, $description, $price,$startDate,$endDate, $id = null) {
+        $this->title = $title;
+        $this->description = $description;
+        $this->price = $price;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+        $this->id = $id;
     }
     
     public function save() {
         $db = Database::getInstance()->getConnection();
-        $sql = "INSERT INTO reservations (user_id, activity_id, date, status) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO activities (title, description, price, start_date, end_date) VALUES (?, ?, ?, ?, ?)";
         
         $stmt = $db->prepare($sql);
-        $stmt->bindParam("iiss", $this->userId, $this->activityId, $this->date, $this->status);
+        $stmt->bindParam("ssd", $this->title, $this->description, $this->price);
         return $stmt->execute();
     }
-    
-    public function updateStatus($newStatus) {
-        $db = Database::getInstance()->getConnection();
-        $sql = "UPDATE reservations SET status = ? WHERE id = ?";
-        
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam("si", $newStatus, $this->id);
-        return $stmt->execute();
-    }
+
+public function update() {
+    $db = Database::getInstance()->getConnection();
+    $sql = "UPDATE activities SET title = ?, description = ?, price = ?, start_date = ?, end_date = ? WHERE id = ?";
+
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam("ssdssi", $this->title, $this->description, $this->price, $this->startDate, $this->endDate, $this->id);
+    return $stmt->execute();
 }
+public function delete() {
+    $db = Database::getInstance()->getConnection();
+    $sql = "DELETE FROM activities WHERE id = ?";
+    
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam("i", $this->id);
+    return $stmt->execute();
+}
+}
+
+
+
 ?>
