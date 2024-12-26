@@ -7,6 +7,7 @@ CREATE TABLE utilisateurs(
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(150) NOT NULL,
     prenom VARCHAR(150) NOT NULL,
+    password VARCHAR(200) NOT NULL,
     email VARCHAR(200) UNIQUE NOT NULL
 );
 
@@ -31,7 +32,7 @@ CREATE TABLE reservation(
     FOREIGN KEY (id_activite) REFERENCES activite(id_activite)
 );
 CREATE TABLE user_reservation(
-    id_reservation INT(11) AUTO_INCREMENT PRIMARY KEY,
+    id_use_reservation INT(11) AUTO_INCREMENT PRIMARY KEY,
     id_client INT(11),
     id_reservation INT(11),
     FOREIGN KEY (id_client) REFERENCES utilisateurs(id),
