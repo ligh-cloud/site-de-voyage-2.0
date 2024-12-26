@@ -17,7 +17,7 @@ class Activity {
         $sql = "INSERT INTO activities (title, description, price) VALUES (?, ?, ?)";
         
         $stmt = $db->prepare($sql);
-        $stmt->bind_param("ssd", $this->title, $this->description, $this->price);
+        $stmt->bindParam("ssd", $this->title, $this->description, $this->price);
         return $stmt->execute();
     }
 }

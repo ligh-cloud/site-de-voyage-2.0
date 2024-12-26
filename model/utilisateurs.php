@@ -105,7 +105,7 @@ class Client extends User {
         $sql = "INSERT INTO reservations (user_id, activity_id, date, status) VALUES (?, ?, ?, 'pending')";
         
         $stmt = $db->prepare($sql);
-        $stmt->bind_param("iis", $this->id, $activityId, $date);
+        $stmt->bindParam("iis", $this->id, $activityId, $date);
         return $stmt->execute();
     }
     
