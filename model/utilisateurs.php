@@ -69,7 +69,7 @@ abstract class User {
 
     public function login() {
         $db = Database::getInstance()->getConnection();
-        $sql = "SELECT u.*, r.role FROM users u 
+        $sql = "SELECT u.*, r.role FROM utilisateurs u 
                 LEFT JOIN roles r ON u.id = r.id_client 
                 WHERE u.email = ? LIMIT 1";
         
