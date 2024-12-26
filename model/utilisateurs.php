@@ -82,8 +82,8 @@ class Admin extends User {
                     $activityData['title'],
                     $activityData['description'],
                     $activityData['price'],
-                    $activityData['date_start'],
-                    $activityData['date_end']
+                    $activityData['date_debut'],
+                    $activityData['date_fin']
                 );
                 return $stmt->execute();
                 
@@ -118,6 +118,7 @@ class Client extends User {
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 }
+
 
 
 
