@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       
         if ($user->login()) {
             echo "Login successful";
+            header("Location: ../view/user_dashboard.php");
         } else {
             echo "Invalid email or password";
             var_dump($user) ;
