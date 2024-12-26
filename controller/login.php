@@ -1,6 +1,6 @@
 <?php
-require_once "../model/utilisateurs.php";  
-
+  
+  require_once "../model/utilisateurs.php";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    
     $email = trim($_POST['email']);
@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       
         if ($user->login()) {
             echo "Login successful";
+            header("location: ../view/admin_dashboard.php");
         } else {
             echo "Invalid email or password";
             var_dump($user) ;
@@ -37,3 +38,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+

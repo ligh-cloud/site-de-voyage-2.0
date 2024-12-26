@@ -144,25 +144,12 @@ class Admin extends User {
  
     public function manageActivities($action, $activityData = null, $activityId = null) {
         $db = Database::getInstance()->getConnection();
-        
-        switch ($action) {
-            case 'add':
-                $sql = "INSERT INTO activities (title, description, price, date_start, date_end) VALUES (?, ?, ?, ?, ?)";
-                $stmt = $db->prepare($sql);
-                $stmt->bindParam("ssdss", 
-                    $activityData['title'],
-                    $activityData['description'],
-                    $activityData['price'],
-                    $activityData['date_debut'],
-                    $activityData['date_fin']
-                );
-                return $stmt->execute();
-
+    
         try {
             switch ($action) {
                 case 'add':
                     $sql = "INSERT INTO activite (titre, vols, hotels, circuits_touristiques, prix, date_debut, date_fin) 
-                           VALUES (?, ?, ?, ?, ?, ?, ?)";
+                            VALUES (?, ?, ?, ?, ?, ?, ?)";
                     $stmt = $db->prepare($sql);
                     $stmt->bindParam(1, $activityData['titre'], PDO::PARAM_STR);
                     $stmt->bindParam(2, $activityData['vols'], PDO::PARAM_STR);
@@ -172,14 +159,33 @@ class Admin extends User {
                     $stmt->bindParam(6, $activityData['date_debut'], PDO::PARAM_STR);
                     $stmt->bindParam(7, $activityData['date_fin'], PDO::PARAM_STR);
                     return $stmt->execute();
-                    
+    
                 case 'delete':
                     $sql = "DELETE FROM activite WHERE id_activite = ?";
                     $stmt = $db->prepare($sql);
                     $stmt->bindParam(1, $activityId, PDO::PARAM_INT);
                     return $stmt->execute();
-
-                
+    
+                case 'view_all':
+                    $sql = "SELECT * FROM activite";
+                    $stmt = $db->prepare($sql);
+                    $stmt->execute();
+                    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+                case 'update':
+                    $sql = "UPDATE activite SET titre = ?, vols = ?, hotels = ?, circuits_touristiques = ?, prix = ?, date_debut = ?, date_fin = ? 
+                            WHERE id_activite = ?";
+                    $stmt = $db->prepare($sql);
+                    $stmt->bindParam(1, $activityData['titre'], PDO::PARAM_STR);
+                    $stmt->bindParam(2, $activityData['vols'], PDO::PARAM_STR);
+                    $stmt->bindParam(3, $activityData['hotels'], PDO::PARAM_STR);
+                    $stmt->bindParam(4, $activityData['circuits_touristiques'], PDO::PARAM_STR);
+                    $stmt->bindParam(5, $activityData['prix'], PDO::PARAM_STR);
+                    $stmt->bindParam(6, $activityData['date_debut'], PDO::PARAM_STR);
+                    $stmt->bindParam(7, $activityData['date_fin'], PDO::PARAM_STR);
+                    $stmt->bindParam(8, $activityId, PDO::PARAM_INT);
+                    return $stmt->execute();
+    
                 default:
                     return false;
             }
@@ -188,8 +194,26 @@ class Admin extends User {
             return false;
         }
     }
-}
-}
+    public function getAllUsers() {
+        $db = Database::getInstance()->getConnection();
+        $sql = "SELECT u.*, r.role FROM utilisateurs u LEFT JOIN roles r ON u.id = r.id_client";
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function getAllReservations() {
+        $db = Database::getInstance()->getConnection();
+        $sql = "SELECT r.*, u.nom as user_name, a.titre as activity_title 
+                FROM reservation r 
+                JOIN utilisateurs u ON r.id_client = u.id 
+                JOIN activite a ON r.id_activite = a.id_activite";
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+        
+}  
 
 class Client extends User {
     public function getRole() {
