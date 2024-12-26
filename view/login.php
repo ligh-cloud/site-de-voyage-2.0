@@ -22,7 +22,7 @@
             <div>
                 <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Connexion</h2>
             </div>
-            <form action="login.php" method="POST" class="mt-8 space-y-6">
+            <form action="../controller/login.php" method="POST" class="mt-8 space-y-6">
                 <div class="rounded-md shadow-sm -space-y-px">
                     <div>
                         <input id="email" name="email" type="email" required 

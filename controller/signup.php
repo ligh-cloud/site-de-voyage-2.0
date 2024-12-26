@@ -31,14 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   
     if (empty($errors)) {
         try {
-
+            
             $user = new Client($nom , $prenom, $email, $password);
             var_dump($user);
             if ($user->register()) {
-                echo "Registration successful!";
-
-                // header("Location: login.php");
-                // exit;
+                
+            
+                header("Location: ../view/login.php");
+                exit;
             } else {
                 echo "Registration failed. Please try again.";
             }
