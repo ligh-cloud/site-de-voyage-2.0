@@ -43,7 +43,7 @@
                 </div>
             </form>
             <div class="text-center">
-                <a href="signup.html" class="text-blue-600 hover:text-blue-700">Pas encore de compte ? S'inscrire</a>
+                <a href="signup.php" class="text-blue-600 hover:text-blue-700">Pas encore de compte ? S'inscrire</a>
             </div>
         </div>
     </div>
