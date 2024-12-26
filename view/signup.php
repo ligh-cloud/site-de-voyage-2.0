@@ -14,7 +14,7 @@
                     <a href="index.php" class="text-xl font-bold text-blue-600">TravelRes</a>
                 </div>
                 <div class="hidden md:flex items-center space-x-4">
-                    <a href="login.html" class="text-gray-700 hover:text-blue-600">Déjà inscrit ? Se connecter</a>
+                    <a href="login.php" class="text-gray-700 hover:text-blue-600">Déjà inscrit ? Se connecter</a>
                 </div>
             </div>
         </div>

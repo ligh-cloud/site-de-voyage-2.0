@@ -11,7 +11,7 @@
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <a href="index.html" class="text-xl font-bold text-blue-600">TravelRes</a>
+                    <a href="index.php" class="text-xl font-bold text-blue-600">TravelRes</a>
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
                 </div>
             </form>
             <div class="text-center">
-                <a href="signup.html" class="text-blue-600 hover:text-blue-700">Pas encore de compte ? S'inscrire</a>
+                <a href="signup.php" class="text-blue-600 hover:text-blue-700">Pas encore de compte ? S'inscrire</a>
             </div>
         </div>
     </div>
