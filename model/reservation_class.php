@@ -1,26 +1,43 @@
 <?php 
-class Activity {
+class Reservation {
     private $id;
-    private $title;
-    private $description;
-    private $price;
+    private $userId;
+    private $activityId;
+    private $date;
+    private $status;
     
-    public function __construct($title, $description, $price, $id = null) {
-        $this->title = $title;
-        $this->description = $description;
-        $this->price = $price;
-        $this->id = $id;
+    public function __construct($userId, $activityId, $date) {
+        $this->userId = $userId;
+        $this->activityId = $activityId;
+        $this->date = $date;
+        $this->status = 'pending';
     }
     
     public function save() {
         $db = Database::getInstance()->getConnection();
-        $sql = "INSERT INTO activities (title, description, price) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO reservations (user_id, activity_id, date, status) VALUES (?, ?, ?, ?)";
         
         $stmt = $db->prepare($sql);
-        $stmt->bindParam("ssd", $this->title, $this->description, $this->price);
+        $stmt->bindParam("iiss", $this->userId, $this->activityId, $this->date, $this->status);
+        return $stmt->execute();
+    }
+    
+    public function updateStatus($newStatus) {
+        $db = Database::getInstance()->getConnection();
+        $sql = "UPDATE reservations SET status = ? WHERE id = ?";
+        
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("si", $newStatus, $this->id);
+        return $stmt->execute();
+    }
+    public function delete() {
+        $db = Database::getInstance()->getConnection();
+        $sql = "DELETE FROM reservations WHERE id = ?";
+        
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("i", $this->id);
         return $stmt->execute();
     }
 }
-
 
 ?>
