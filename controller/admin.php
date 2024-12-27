@@ -120,20 +120,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header("Location: admin_dashboard.php");
                 exit;
                 case 'delete_user':
-                    $userId = $_POST['user_id'] ?? null;
-                    if (!$userId) {
-                        $_SESSION['error'] = "User ID is required";
-                        header("Location: ../view/admin_dashboard.php");
-                        exit;
-                    }
-                    $result = $admin->manageUsers('delete', $userId);
-                    if ($result) {
-                        $_SESSION['success'] = "User deleted successfully!";
-                    } else {
-                        $_SESSION['error'] = "Failed to delete user. Please try again.";
-                    }
-                    header("Location: ../view/admin_dashboard.php");
-                    exit;
+            $userId = $_POST['user_id'] ?? null;
+            if (!$userId) {
+                $_SESSION['error'] = "User ID is required";
+                header("Location: ../view/admin_dashboard.php");
+                exit;
+            }
+            $result = $admin->manageUsers('delete', $userId);
+            if ($result) {
+                $_SESSION['success'] = "User deleted successfully!";
+            } else {
+                $_SESSION['error'] = "Failed to delete user. Please try again.";
+            }
+            header("Location: ../view/admin_dashboard.php");
+            exit;
                     case 'add_admin':
                         $nom = trim($_POST['nom']);
                         $prenom = trim($_POST['prenom']);
