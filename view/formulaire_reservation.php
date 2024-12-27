@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-
 if (!isset($_SESSION['is_logged_in']) || $_SESSION['is_logged_in'] !== true) {
     header("Location: login.php");
     exit();
@@ -30,7 +29,6 @@ if (isset($_SESSION['id_activite']) && isset($_SESSION['user']['id'])) {
     $conn = $db->getConnection();
 
     try {
-        
         $sql = "INSERT INTO reservation (id_client, id_activite) VALUES (:id_client, :id_activite)";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':id_client', $id_client, PDO::PARAM_INT);
@@ -59,6 +57,7 @@ if (isset($_SESSION['id_activite']) && isset($_SESSION['user']['id'])) {
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
+    <!-- Header -->
     <header class="bg-blue-800 text-white py-4 shadow-lg">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-bold">VoyageDream</h1>

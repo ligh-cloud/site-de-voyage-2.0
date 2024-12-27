@@ -7,14 +7,15 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans">
-  <header class="bg-blue-800 text-white py-4 shadow-lg">
+<header class="bg-blue-800 text-white py-4 shadow-lg">
     <div class="container mx-auto flex justify-between items-center">
       <h1 class="text-2xl font-bold">VoyageDream</h1>
       <nav>
         <ul class="flex space-x-6">
-          <li><a href="#" class="hover:underline">Accueil</a></li>
-          <li><a href="#" class="hover:underline">Mes Réservations</a></li>
-          <li><a href="#" class="hover:underline">Déconnexion</a></li>
+          <li><a href="index.php" class="hover:underline">Accueil</a></li>
+          <li><a href="activities.php" class="text-white hover:underline">Retour aux Activités</a></li>
+          <li><a href="user_dashboard.php" class="hover:underline">Mes Réservations</a></li>
+          <li><a href="login.php" class="hover:underline">Déconnexion</a></li>
         </ul>
       </nav>
     </div>
@@ -37,36 +38,49 @@
     </div>
 
     <!-- Activity Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- Card Example -->
-      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-        <img src="https://tcsvoyages.ch/wp-content/uploads/2020/06/download-pollina-resort-13-scaled.jpg" alt="Activity Image" class="w-full h-48 object-cover">
-        <div class="p-4">
-          <h3 class="text-xl font-semibold text-gray-800">Séjour Balnéaire</h3>
-          <p class="text-gray-600 mt-2">Découvrez les plages paradisiaques et profitez d'un séjour inoubliable.</p>
-          <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">réserver</button>
-        </div>
-      </div>
-      
-      <!-- More cards here -->
-      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-        <img src="https://th.bing.com/th/id/R.b4f4c9dbff2b5f0dfea7c8ccbc16cb9c?rik=4TLsy6uwiQ57hQ&riu=http%3a%2f%2fwww.hotellesskieurs.com%2fphotos%2fcontenu%2f1572%2fbig%2ffotolia_56569523_s.jpg&ehk=Ah8ZPfYa5wxZox7ZvNMxOuN2SIGxy7n6wHTIOnKC7B8%3d&risl=&pid=ImgRaw&r=0" alt="Activity Image" class="w-full h-48 object-cover">
-        <div class="p-4">
-          <h3 class="text-xl font-semibold text-gray-800">Circuit Montagnard</h3>
-          <p class="text-gray-600 mt-2">Explorez les sommets et laissez-vous émerveiller par la nature.</p>
-          <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">réserver</button>
-        </div>
-      </div>
+    <?php
+       require_once '../model/db_connect.php'; 
+$db = Database::getInstance()->getConnection();
 
-      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-        <img src="https://th.bing.com/th/id/OIP.ap89izELUT8u3fmEHn4NTwHaHa?rs=1&pid=ImgDetMain" alt="Activity Image" class="w-full h-48 object-cover">
-        <div class="p-4">
-          <h3 class="text-xl font-semibold text-gray-800">Escapade Urbaine</h3>
-          <p class="text-gray-600 mt-2">Découvrez le charme des grandes villes et leurs trésors cachés.</p>
-          <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">réserver</button>
-        </div>
-      </div>
-    </div>
+$sql = "SELECT * FROM activite";
+$stmt = $db->prepare($sql);
+$stmt->execute();
+$activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <?php
+    foreach ($activities as $activity) {
+        $vol = htmlspecialchars($activity['vols']);
+        $hotel = htmlspecialchars($activity['hotels']);
+        $circuit = htmlspecialchars($activity['circuits_touristiques']);
+        $title = htmlspecialchars($activity['titre']);
+        $price = number_format($activity['prix'], 2, ',', ' ');
+        $start_date = htmlspecialchars($activity['date_debut']);
+        $end_date = htmlspecialchars($activity['date_fin']);
+        echo "
+        <div class='bg-white rounded-lg shadow-lg overflow-hidden'>
+            <img src='https://tcsvoyages.ch/wp-content/uploads/2020/06/download-pollina-resort-13-scaled.jpg' alt='Image de l'activité' class='w-full h-48 object-cover'>
+            <div class='p-4'>
+                <h3 class='text-xl font-semibold text-gray-800'>{$title}</h3>
+                <p class='text-gray-600 mt-2'>Vol : {$vol}</p>
+                <p class='text-gray-600'>Hôtel : {$hotel}</p>
+                <p class='text-gray-600'>Circuit : {$circuit}</p>
+                <p class='text-gray-600 mt-2'>Prix : {$price} €</p>
+                <p class='text-gray-600'>Dates : du {$start_date} au {$end_date}</p>
+                
+                <!-- Formulaire de réservation -->
+                <form action='formulaire_reservation.php' method='POST'>
+                    <input type='hidden' name='id_activite' value='{$activity['id_activite']}'>
+                    <button type='submit' class='mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 inline-block'>Réserver</button>
+                </form>
+            </div>
+        </div>";
+    
+    }
+    ?>
+</div>
+
   </main>
 
   <footer class="bg-blue-800 text-white py-6 mt-12">
