@@ -24,7 +24,6 @@ CREATE TABLE reservation(
     id_reservation INT AUTO_INCREMENT PRIMARY KEY,
     id_client INT NOT NULL,
     id_activite INT NOT NULL,
-    date_reservation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status ENUM('en attente', 'confirmer', 'annuler') DEFAULT 'en attente',
     FOREIGN KEY (id_client) REFERENCES utilisateurs(id) ON DELETE CASCADE,
     FOREIGN KEY (id_activite) REFERENCES activite(id_activite) ON DELETE CASCADE
