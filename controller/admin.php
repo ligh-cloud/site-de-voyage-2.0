@@ -9,10 +9,10 @@ if (session_status() === PHP_SESSION_NONE) {
 
 
 
-// if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
-//     header("Location: ../login.php");
-//     exit;
-// }
+if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
+    header("Location: ../view/login.php");
+    exit;
+}
 
 
 $admin = new Admin(
@@ -134,6 +134,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                     header("Location: ../view/admin_dashboard.php");
                     exit;
+                    case 'add_admin':
+                        $nom = trim($_POST['nom']);
+                        $prenom = trim($_POST['prenom']);
+                        $email = trim($_POST['email']);
+                        $password = $_POST['password'];
+                        $confirmPassword = $_POST['confirmPassword'];
+                        
+                        $errors = [];
+            
+                        if (empty($password) || empty($confirmPassword)) {
+                            $errors[] = "Both password fields are required";
+                        } elseif ($password !== $confirmPassword) {
+                            $errors[] = "The passwords don't match";
+                        }
+            
+                        if (empty($nom) || empty($prenom)) {
+                            $errors[] = "First name and last name are required";
+                        }
+            
+                       
+                        if (empty($email)) {
+                            $errors[] = "Email is required";
+                        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                            $errors[] = "Invalid email format";
+                        }
+            
+                       
+                        if (empty($errors)) {
+                            try {
+                               
+                                $newAdmin = new Admin($nom, $prenom, $email, $password);
+                                
+                                if ($newAdmin->register()) {
+                                    $_SESSION['success'] = "New admin added successfully!";
+                                } else {
+                                    $_SESSION['error'] = "Failed to add new admin. Please try again.";
+                                }
+                            } catch (Exception $e) {
+                                error_log("Registration error: " . $e->getMessage());
+                                $_SESSION['error'] = "An error occurred during registration. Please try again later.";
+                            }
+                        } else {
+                          
+                            $_SESSION['error'] = implode("<br>", $errors);
+                        }
+            
+                        header("Location: ../view/admin_dashboard.php");
+                        exit;
             case 'approve_reservation':
             case 'reject_reservation':
                 $reservationId = $_POST['reservation_id'] ?? null;

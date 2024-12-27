@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $errors = [];
     
-   
+
     if (empty($password) || empty($confirmPassword)) {
         $errors[] = "Both password fields are required";
     } elseif ($password !== $confirmPassword) {
@@ -22,21 +22,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors[] = "Username is required";
     }
     
+    
     if (empty($email)) {
         $errors[] = "Email is required";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "Invalid email format";
     }
     
-  
+   
     if (empty($errors)) {
         try {
+            $db = Database::getInstance()->getConnection();
             
-            $user = new Client($nom , $prenom, $email, $password);
-            var_dump($user);
+           
+            $stmt = $db->query("SELECT COUNT(*) FROM utilisateurs");
+            $userCount = $stmt->fetchColumn();
+            
+   
+            $role = ($userCount == 0) ? 'admin' : 'user';
+           
+            $user = new Client($nom, $prenom, $email, $password, $role);
+            
             if ($user->register()) {
-                
-            
+               
                 header("Location: ../view/login.php");
                 exit;
             } else {
@@ -47,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "An error occurred during registration. Please try again later.";
         }
     } else {
-        
+     
         foreach ($errors as $error) {
             echo $error . "<br>";
         }

@@ -237,12 +237,60 @@ class Admin extends User {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function register() {
+        $db = Database::getInstance()->getConnection();
+        
+        $db->beginTransaction();
+        
+        try {
+            $sql = "INSERT INTO utilisateurs (nom, prenom, email, password) VALUES (?, ?, ?, ?)";
+            
+            $stmt = $db->prepare($sql);
+            $hashedPassword = password_hash($this->password, PASSWORD_BCRYPT);
+            
+            $stmt->bindParam(1, $this->nom, PDO::PARAM_STR);
+            $stmt->bindParam(2, $this->prenom, PDO::PARAM_STR);
+            $stmt->bindParam(3, $this->email, PDO::PARAM_STR);
+            $stmt->bindParam(4, $hashedPassword, PDO::PARAM_STR);
+            
+            $success = $stmt->execute();
+            
+            if ($success) {
+                $userId = $db->lastInsertId();
+                
+                $roleSql = "INSERT INTO roles (id_client, role) VALUES (?, 'admin')";
+                $roleStmt = $db->prepare($roleSql);
+                
+                $roleStmt->bindParam(1, $userId, PDO::PARAM_INT);
+                
+                if ($roleStmt->execute()) {
+                    $db->commit();
+                    $this->id = $userId;
+                    return true;
+                }
+            }
+            
+            $db->rollBack();
+            return false;
+            
+        } catch (PDOException $e) {
+            $db->rollBack();
+            error_log("Registration error: " . $e->getMessage());
+            return false;
+        }
+    }
+
         
 }  
 
 class Client extends User {
+    public function __construct($nom, $prenom, $email, $password, $role = 'user') {
+        parent::__construct($nom, $prenom, $email, $password);
+        $this->role = $role;
+    }
+
     public function getRole() {
-        return 'user';  
+        return $this->role;
     }
     
     public function makeReservation($activityId, $date) {

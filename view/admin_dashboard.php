@@ -15,7 +15,7 @@
             <div class="flex justify-between items-center h-16">
                 <a href="index.php" class="text-xl font-bold text-blue-600">TravelRes Admin</a>
                 <div class="flex items-center space-x-4">
-                    <a href="../logout.php" class="text-red-600 hover:text-red-800">Logout</a>
+                    <a href="../controller/logout.php" class="text-red-600 hover:text-red-800">Logout</a>
                 </div>
             </div>
         </div>
@@ -138,6 +138,24 @@
                 </table>
             </div>
         </section>
+        <section id="add_new_admin" class="mb-8">
+    <h2 class="text-2xl font-bold mb-4">Add New Admin</h2>
+    <form action="../controller/admin.php" method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <input type="hidden" name="action" value="add_admin">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="text" name="nom" placeholder="First Name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            <input type="text" name="prenom" placeholder="Last Name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            <input type="email" name="email" placeholder="Email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            <input type="password" name="password" placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            <input type="password" name="confirmPassword" placeholder="Confirm Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Add Admin
+            </button>
+        </div>
+    </form>
+</section>
     </div>
 
     <footer class="bg-gray-800 text-white py-8 mt-8">
