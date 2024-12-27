@@ -59,42 +59,42 @@
         </section>
 
         <section id="users" class="mb-8">
-            <h2 class="text-2xl font-bold mb-4">Manage Users</h2>
-            <div class="overflow-x-auto">
-                <table class="min-w-full bg-white shadow-md rounded">
-                    <thead class="bg-gray-100">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        <?php if (isset($users) && !empty($users)): ?>
-                            <?php foreach ($users as $user): ?>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($user['nom'] . ' ' . $user['prenom']) ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($user['email']) ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($user['role']) ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <form action="admin_dashboard.php" method="POST" class="inline">
-                                        <input type="hidden" name="action" value="delete_user">
-                                        <input type="hidden" name="user_id" value="<?= $user['id'] ?>">
-                                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap" colspan="4">No users found.</td>
-                            </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
-        </section>
+    <h2 class="text-2xl font-bold mb-4">Manage Users</h2>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white shadow-md rounded">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                <?php if (isset($users) && !empty($users)): ?>
+                    <?php foreach ($users as $user): ?>
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($user['nom'] . ' ' . $user['prenom']) ?></td>
+                        <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($user['email']) ?></td>
+                        <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($user['role']) ?></td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <form action="../controller/admin.php" method="POST" class="inline">
+                                <input type="hidden" name="action" value="delete_user">
+                                <input type="hidden" name="user_id" value="<?= $user['id'] ?>">
+                                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap" colspan="4">No users found.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</section>
 
         <section id="reservations">
             <h2 class="text-2xl font-bold mb-4">Manage Reservations</h2>

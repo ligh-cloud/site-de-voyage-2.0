@@ -113,10 +113,10 @@ class Admin extends User {
     public function getRole() {
         return 'admin';
     }
-    
+
     public function manageUsers($action, $userId = null, $userData = null) {
         $db = Database::getInstance()->getConnection();
-        
+
         try {
             switch ($action) {
                 case 'ban':
@@ -127,11 +127,27 @@ class Admin extends User {
                     return $stmt->execute();
 
                 case 'delete':
-                    if (!$userId) return false; 
-                    $sql = "DELETE FROM utilisateurs WHERE id = ?";
-                    $stmt = $db->prepare($sql);
-                    $stmt->bindParam(1, $userId, PDO::PARAM_INT);
-                    return $stmt->execute();
+                    if (!$userId) return false;
+
+                    $sqlCheckRole = "SELECT r.role FROM roles r WHERE r.id_client = ?";
+                    $stmtCheckRole = $db->prepare($sqlCheckRole);
+                    $stmtCheckRole->bindParam(1, $userId, PDO::PARAM_INT);
+                    $stmtCheckRole->execute();
+                    $userRole = $stmtCheckRole->fetchColumn();
+
+               
+                    error_log("Attempting to delete user with ID: $userId, Role: $userRole");
+
+              
+                    if ($userRole === 'admin') {
+                        error_log("Attempted to delete an admin user with ID: $userId");
+                        return false;
+                    }
+
+                    $sqlUser = "DELETE FROM utilisateurs WHERE id = ?";
+                    $stmtUser = $db->prepare($sqlUser);
+                    $stmtUser->bindParam(1, $userId, PDO::PARAM_INT);
+                    return $stmtUser->execute();
                     
                 case 'update':
                     $sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ? WHERE id = ?";
