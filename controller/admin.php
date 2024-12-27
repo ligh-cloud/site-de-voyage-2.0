@@ -8,10 +8,11 @@ if (session_status() === PHP_SESSION_NONE) {
 
 
 
-if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
-    header("Location: ../login.php");
-    exit;
-}
+
+// if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
+//     header("Location: ../login.php");
+//     exit;
+// }
 
 
 $admin = new Admin(
@@ -29,89 +30,128 @@ $reservations = $admin->getAllReservations();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
-    echo "";
-    switch ($action) {
-        case 'add_activity':
-            $activityData = [
-                'titre' => trim($_POST['titre'] ?? ''),
-                'vols' => trim($_POST['vols'] ?? ''),
-                'hotels' => trim($_POST['hotels'] ?? ''),
-                'circuits_touristiques' => trim($_POST['circuits_touristiques'] ?? ''),
-                'prix' => trim($_POST['prix'] ?? ''),
-                'date_debut' => trim($_POST['date_debut'] ?? ''),
-                'date_fin' => trim($_POST['date_fin'] ?? ''),
-            ];
-            
-          
-            foreach ($activityData as $key => $value) {
-                if (empty($value)) {
-                    $_SESSION['error'] = "All fields are required. Missing: $key";
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $action = $_POST['action'] ?? '';
+
+        switch ($action) {
+            case 'add_activity':
+
+                $activityData = [
+                    'titre' => $_POST['titre'] ?? '',
+                    'vols' => $_POST['vols'] ?? '',
+                    'hotels' => $_POST['hotels'] ?? '',
+                    'circuits_touristiques' => $_POST['circuits_touristiques'] ?? '',
+                    'prix' => $_POST['prix'] ?? '',
+                    'date_debut' => $_POST['date_debut'] ?? '',
+                    'date_fin' => $_POST['date_fin'] ?? '',
+                ];
+
+                foreach ($activityData as $key => $value) {
+                    if (empty($value)) {
+                        $_SESSION['error'] = "All fields are required. Missing: $key";
+
+                        exit;
+                    }
+                }
+
+                $result = $admin->manageActivities('add', $activityData);
+                if ($result) {
+                    $_SESSION['success'] = "Activity added successfully!";
+                    echo "Activity added successfully";
+                } else {
+                    $_SESSION['error'] = "Failed to add activity. Please try again.";
+                    echo "Failed to add activity. Please try again";
+                }
+
+                exit;
+
+
+                break;
+
+            case 'update_activity':
+                $activityId = $_POST['activity_id'] ?? null;
+                if (!$activityId) {
+                    $_SESSION['error'] = "Activity ID is required";
                     header("Location: admin_dashboard.php");
                     exit;
                 }
-            }
-            
-           
-            if (!is_numeric($activityData['prix']) || $activityData['prix'] <= 0) {
-                $_SESSION['error'] = "Price must be a positive number";
-                header("Location: admin_dashboard.php");
-                exit;
-            }
-            
-            if (strtotime($activityData['date_fin']) <= strtotime($activityData['date_debut'])) {
-                $_SESSION['error'] = "End date must be after start date";
-                header("Location: admin_dashboard.php");
-                exit;
-            }
-            
-            $result = $admin->manageActivities('add', $activityData);
-            $_SESSION[($result ? 'success' : 'error')] = $result ? "Activity added successfully!" : "Failed to add activity";
-            break;
-            
-        case 'update_user':
-            if (!isset($_POST['user_id']) || !is_numeric($_POST['user_id'])) {
-                $_SESSION['error'] = "Invalid user ID";
-                break;
-            }
-            
-            $userData = [
-                'nom' => trim($_POST['nom'] ?? ''),
-                'prenom' => trim($_POST['prenom'] ?? ''),
-                'email' => filter_var(trim($_POST['email'] ?? ''), FILTER_VALIDATE_EMAIL)
-            ];
-            
-            if (!$userData['email']) {
-                $_SESSION['error'] = "Invalid email format";
-                break;
-            }
-            
-            $result = $admin->manageUsers('update', $_POST['user_id'], $userData);
-            $_SESSION[($result ? 'success' : 'error')] = $result ? "User updated successfully!" : "Failed to update user";
-            break;
-            
-        case 'ban_user':
-            if (!isset($_POST['user_id']) || !is_numeric($_POST['user_id'])) {
-                $_SESSION['error'] = "Invalid user ID";
-                break;
-            }
-            
-            $result = $admin->manageUsers('ban', $_POST['user_id']);
-            $_SESSION[($result ? 'success' : 'error')] = $result ? "User banned successfully!" : "Failed to ban user";
-            break;
-            
-        // case 'approve_reservation':
-        // case 'reject_reservation':
-        //     if (!isset($_POST['reservation_id']) || !is_numeric($_POST['reservation_id'])) {
-        //         $_SESSION['error'] = "Invalid reservation ID";
-        //         break;
-        //     }
-            
-        //     $status = ($action === 'approve_reservation') ? 'approved' : 'rejected';
-        //     $result = $admin->updateReservationStatus($_POST['reservation_id'], $status);
-        //     $_SESSION[($result ? 'success' : 'error')] = $result ? "Reservation {$status} successfully!" : "Failed to update reservation";
-        //     break;
-    }
-    
 
-    exit;
+                $activityData = [
+                    'titre' => $_POST['titre'] ?? '',
+                    'vols' => $_POST['vols'] ?? '',
+                    'hotels' => $_POST['hotels'] ?? '',
+                    'circuits_touristiques' => $_POST['circuits_touristiques'] ?? '',
+                    'prix' => $_POST['prix'] ?? '',
+                    'date_debut' => $_POST['date_debut'] ?? '',
+                    'date_fin' => $_POST['date_fin'] ?? '',
+                ];
+
+                foreach ($activityData as $key => $value) {
+                    if (empty($value)) {
+                        $_SESSION['error'] = "All fields are required. Missing: $key";
+                        header("Location: admin_dashboard.php");
+                        exit;
+                    }
+                }
+
+                $result = $admin->manageActivities('update', $activityData, $activityId);
+                if ($result) {
+                    $_SESSION['success'] = "Activity updated successfully!";
+                } else {
+                    $_SESSION['error'] = "Failed to update activity. Please try again.";
+                }
+                header("Location: admin_dashboard.php");
+                exit;
+
+            case 'delete_activity':
+                $activityId = $_POST['activity_id'] ?? null;
+                if (!$activityId) {
+                    $_SESSION['error'] = "Activity ID is required";
+                    header("Location: admin_dashboard.php");
+                    exit;
+                }
+
+                $result = $admin->manageActivities('delete', null, $activityId);
+                if ($result) {
+                    $_SESSION['success'] = "Activity deleted successfully!";
+                } else {
+                    $_SESSION['error'] = "Failed to delete activity. Please try again.";
+                }
+                header("Location: admin_dashboard.php");
+                exit;
+                case 'delete_user':
+                    $userId = $_POST['user_id'] ?? null;
+                    if (!$userId) {
+                        $_SESSION['error'] = "User ID is required";
+                        header("Location: ../view/admin_dashboard.php");
+                        exit;
+                    }
+                    $result = $admin->manageUsers('delete', $userId);
+                    if ($result) {
+                        $_SESSION['success'] = "User deleted successfully!";
+                    } else {
+                        $_SESSION['error'] = "Failed to delete user. Please try again.";
+                    }
+                    header("Location: ../view/admin_dashboard.php");
+                    exit;
+            case 'approve_reservation':
+            case 'reject_reservation':
+                $reservationId = $_POST['reservation_id'] ?? null;
+                if (!$reservationId) {
+                    $_SESSION['error'] = "Reservation ID is required";
+                    header("Location: admin_dashboard.php");
+                    exit;
+                }
+                $status = ($action === 'approve_reservation') ? 'confirmer' : 'annuler';
+                $result = $admin->updateReservationStatus($reservationId, $status);
+                if ($result) {
+                    $_SESSION['success'] = "Reservation $status successfully!";
+                } else {
+                    $_SESSION['error'] = "Failed to update reservation";
+                }
+                header("Location: admin_dashboard.php");
+                exit;
+        }
+    }
 }
+

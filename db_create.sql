@@ -1,5 +1,3 @@
-
-
 CREATE DATABASE travel;
 USE travel;
 
@@ -23,26 +21,18 @@ CREATE TABLE activite(
 );
 
 CREATE TABLE reservation(
-    id_reservation INT(11) AUTO_INCREMENT PRIMARY KEY,
-    id_client INT(11),
-    id_activite INT(11) NOT NULL,
+    id_reservation INT AUTO_INCREMENT PRIMARY KEY,
+    id_client INT NOT NULL,
+    id_activite INT NOT NULL,
     date_reservation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status ENUM('en attente', 'confirmer', 'annuler') DEFAULT 'en attente',
-    FOREIGN KEY (id_client) REFERENCES utilisateurs(id),
-    FOREIGN KEY (id_activite) REFERENCES activite(id_activite)
-);
-CREATE TABLE user_reservation(
-    id_use_reservation INT(11) AUTO_INCREMENT PRIMARY KEY,
-    id_client INT(11),
-    id_reservation INT(11),
-    FOREIGN KEY (id_client) REFERENCES utilisateurs(id),
-    FOREIGN KEY (id_reservation) REFERENCES reservation(id_reservation)
+    FOREIGN KEY (id_client) REFERENCES utilisateurs(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_activite) REFERENCES activite(id_activite) ON DELETE CASCADE
 );
 
 CREATE TABLE roles(
     id_role INT AUTO_INCREMENT PRIMARY KEY,
-    id_client INT,
-    FOREIGN KEY (id_client) REFERENCES utilisateurs(id),
-    role ENUM('admin', 'user')
+    id_client INT NOT NULL,
+    role ENUM('admin', 'user') NOT NULL,
+    FOREIGN KEY (id_client) REFERENCES utilisateurs(id) ON DELETE CASCADE
 );
-

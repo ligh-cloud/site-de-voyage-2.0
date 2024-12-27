@@ -120,8 +120,18 @@ class Admin extends User {
         try {
             switch ($action) {
                 case 'ban':
-                    
-                    return false;
+                    if (!$userId) return false; 
+                    $sql = "UPDATE utilisateurs SET banned = 1 WHERE id = ?";
+                    $stmt = $db->prepare($sql);
+                    $stmt->bindParam(1, $userId, PDO::PARAM_INT);
+                    return $stmt->execute();
+
+                case 'delete':
+                    if (!$userId) return false; 
+                    $sql = "DELETE FROM utilisateurs WHERE id = ?";
+                    $stmt = $db->prepare($sql);
+                    $stmt->bindParam(1, $userId, PDO::PARAM_INT);
+                    return $stmt->execute();
                     
                 case 'update':
                     $sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ? WHERE id = ?";
@@ -137,6 +147,20 @@ class Admin extends User {
             }
         } catch (PDOException $e) {
             error_log("Manage users error: " . $e->getMessage());
+            return false;
+        }
+    }
+    public function updateReservationStatus($reservationId, $status) {
+        $db = Database::getInstance()->getConnection();
+        $sql = "UPDATE reservation SET status = ? WHERE id_reservation = ?";
+        
+        try {
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(1, $status, PDO::PARAM_STR);
+            $stmt->bindParam(2, $reservationId, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Update reservation status error: " . $e->getMessage());
             return false;
         }
     }
@@ -160,18 +184,19 @@ class Admin extends User {
                     $stmt->bindParam(7, $activityData['date_fin'], PDO::PARAM_STR);
                     return $stmt->execute();
     
-                case 'delete':
-                    $sql = "DELETE FROM activite WHERE id_activite = ?";
-                    $stmt = $db->prepare($sql);
-                    $stmt->bindParam(1, $activityId, PDO::PARAM_INT);
-                    return $stmt->execute();
+                    case 'delete':
+                        if (!$activityId) return false; 
+                        $sql = "DELETE FROM activite WHERE id_activite = ?";
+                        $stmt = $db->prepare($sql);
+                        $stmt->bindParam(1, $activityId, PDO::PARAM_INT);
+                        return $stmt->execute();
     
                 case 'view_all':
                     $sql = "SELECT * FROM activite";
                     $stmt = $db->prepare($sql);
                     $stmt->execute();
                     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+                
                 case 'update':
                     $sql = "UPDATE activite SET titre = ?, vols = ?, hotels = ?, circuits_touristiques = ?, prix = ?, date_debut = ?, date_fin = ? 
                             WHERE id_activite = ?";

@@ -1,3 +1,4 @@
+<?php include "../controller/admin.php" ;?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -36,7 +37,6 @@
             </div>
         <?php endif; ?>
 
-     
         <section id="activities" class="mb-8">
             <h2 class="text-2xl font-bold mb-4">Manage Activities</h2>
             <form action="../controller/admin.php" method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -58,7 +58,6 @@
             </form>
         </section>
 
-      
         <section id="users" class="mb-8">
             <h2 class="text-2xl font-bold mb-4">Manage Users</h2>
             <div class="overflow-x-auto">
@@ -72,26 +71,31 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
-                        <?php foreach ($users as $user): ?>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($user['nom'] . ' ' . $user['prenom']) ?></td>
-                            <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($user['email']) ?></td>
-                            <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($user['role']) ?></td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <form action="admin_dashboard.php" method="POST" class="inline">
-                                    <input type="hidden" name="action" value="ban_user">
-                                    <input type="hidden" name="user_id" value="<?= $user['id'] ?>">
-                                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm">Ban</button>
-                                </form>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
+                        <?php if (isset($users) && !empty($users)): ?>
+                            <?php foreach ($users as $user): ?>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($user['nom'] . ' ' . $user['prenom']) ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($user['email']) ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($user['role']) ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <form action="admin_dashboard.php" method="POST" class="inline">
+                                        <input type="hidden" name="action" value="delete_user">
+                                        <input type="hidden" name="user_id" value="<?= $user['id'] ?>">
+                                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap" colspan="4">No users found.</td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
         </section>
 
-      
         <section id="reservations">
             <h2 class="text-2xl font-bold mb-4">Manage Reservations</h2>
             <div class="overflow-x-auto">
@@ -105,25 +109,31 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
-                        <?php foreach ($reservations as $reservation): ?>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($reservation['user_name']) ?></td>
-                            <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($reservation['activity_title']) ?></td>
-                            <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($reservation['status']) ?></td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <form action="admin_dashboard.php" method="POST" class="inline">
-                                    <input type="hidden" name="action" value="approve_reservation">
-                                    <input type="hidden" name="reservation_id" value="<?= $reservation['id'] ?>">
-                                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded text-sm mr-2">Approve</button>
-                                </form>
-                                <form action="admin_dashboard.php" method="POST" class="inline">
-                                    <input type="hidden" name="action" value="reject_reservation">
-                                    <input type="hidden" name="reservation_id" value="<?= $reservation['id'] ?>">
-                                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm">Reject</button>
-                                </form>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
+                        <?php if (isset($reservations) && !empty($reservations)): ?>
+                            <?php foreach ($reservations as $reservation): ?>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($reservation['user_name']) ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($reservation['activity_title']) ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap"><?= htmlspecialchars($reservation['status']) ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <form action="admin_dashboard.php" method="POST" class="inline">
+                                        <input type="hidden" name="action" value="approve_reservation">
+                                        <input type="hidden" name="reservation_id" value="<?= $reservation['id_reservation'] ?>">
+                                        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded text-sm mr-2">Approve</button>
+                                    </form>
+                                    <form action="admin_dashboard.php" method="POST" class="inline">
+                                        <input type="hidden" name="action" value="reject_reservation">
+                                        <input type="hidden" name="reservation_id" value="<?= $reservation['id_reservation'] ?>">
+                                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm">Reject</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap" colspan="4">No reservations found.</td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
